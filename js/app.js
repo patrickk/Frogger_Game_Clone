@@ -1,5 +1,12 @@
-var maxSpeed = 350;
-var minSpeed = 100;
+var MAX_SPEED = 350;
+var MIN_SPEED = 100;
+var gameScore = 0;
+var playerLife = 5;
+var life = document.querySelector("#life");
+var score = document.querySelector("#score")
+life.innerText = playerLife;
+score.innerText = gameScore;
+
 
 //Class function for enemies
 var Enemy = function(x,y,speed) {
@@ -7,7 +14,7 @@ var Enemy = function(x,y,speed) {
   this.x = x;
   /*Y should be between 50 and 230... 50 1st row, 140 2nd, 230 3rd*/
   this.y = y;
-  this.speed = Math.floor(Math.random()*(maxSpeed - minSpeed + 1))+minSpeed;
+  this.speed = Math.floor(Math.random()*(MAX_SPEED - MIN_SPEED + 1))+MIN_SPEED;
 };
 
 // Update the enemy's position, required method for game
@@ -27,17 +34,25 @@ Enemy.prototype.render = function() {
 
 //Check for collisions between bugs and player
 //Using the Axis-Aligned Bounding Box algorithm from MDN
+//Subtracts life each time player hits enemy
 Enemy.prototype.checkCollisions = function() {
-  allEnemies.forEach(function(box){
-    if (box.x < player.x + 50 &&
-        box.x + 50 > player.x &&
-        box.y < player.y + 50 &&
-        box.y+ 50 > player.y) {
+    if (this.x < player.x + 50 &&
+        this.x + 50 > player.x &&
+        this.y < player.y + 50 &&
+        this.y+ 50 > player.y) {
+          playerLife--;
+          life.innerText = playerLife;
           player.resetPosition();
+          if (playerLife <= 0) {
+            alert("GAME OVER!");
+            gameScore = 0;
+            score.innerText = gameScore;
+            playerLife = 5;
+            life.innerText = playerLife;
+          }
           document.getElementById("message").innerHTML = "Get wrecked";
-          // console.log("Get wrecked");
         }
-  });
+
 };
 
 //Class function for player
@@ -63,19 +78,21 @@ Player.prototype.render = function () {
 //If player gets to end of map, reset game
 Player.prototype.handleInput = function (allowedKeys) {
   if (allowedKeys === 'left' && this.x > 0){
-    this.x = this.x-50;
+    this.x = this.x-101;
   }
   if (allowedKeys === 'right' && this.x <= 399) {
-    this.x = this.x+50;
+    this.x = this.x+101;
   }
   if (allowedKeys === 'down' && this.y < 400) {
-    this.y = this.y+50;
+    this.y = this.y+83;
   }
   if (allowedKeys === 'up' && this.y > 0) {
-    this.y = this.y-50;
+    this.y = this.y-83;
   }
   if (this.y <= 0) {
     document.querySelector("#message").innerHTML = "GOOD JOB!!!!!";
+    gameScore += 100;
+    score.innerText =  gameScore;
     this.resetPosition();
   }
 };

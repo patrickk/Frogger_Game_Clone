@@ -27,3 +27,4 @@ In order to run the game, start up your browser with the HTML file in the folder
 - After every 500 or so points, reward one life
 - Allow user to pick different characters other than `char-boy`
 - Different levels with each being more difficult than one before
+- Change design 

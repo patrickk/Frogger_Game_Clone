@@ -45,10 +45,11 @@ Enemy.prototype.checkCollisions = function() {
           player.resetPosition();
           if (playerLife <= 0) {
             alert("GAME OVER!");
-            gameScore = 0;
-            score.innerText = gameScore;
-            playerLife = 5;
-            life.innerText = playerLife;
+            window.location.reload();
+            // gameScore = 0;
+            // score.innerText = gameScore;
+            // playerLife = 5;
+            // life.innerText = playerLife;
           }
           document.getElementById("message").innerHTML = "Get wrecked";
         }
@@ -103,9 +104,15 @@ Player.prototype.resetPosition = function() {
     this.y = 400;
 };
 
+var Heart = function() {
+  this.sprite = "images/Heart.png";
+  this.x = 300;
+  this.y = 200;
+}
 //Instantiate enemy objects and player object
 var allEnemies = [new Enemy(50,50), new Enemy(50,140), new Enemy(50,230), new Enemy(50, 50)];    //[enemy1, enemy2, enemy3];
 var player = new Player();
+var heart = new Heart();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
